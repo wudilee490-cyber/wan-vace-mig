@@ -1,0 +1,40 @@
+# MIG Adapter 默认配置 (Wan2.1-VACE-1.3B 适配)
+# ============================================
+# 14B 模型时,把 num_heads 改成对应值(查 WAN_CONFIGS),其余可保持默认。
+
+adapter:
+  num_heads: 12                # Wan2.1-VACE-1.3B 默认;14B 用 40
+  text_dim: 4096               # T5 输出维度,与 WanModel.text_dim 一致
+  identity_dim: null           # null = 用 vace 主干 dim,与 patch_embedding 一致
+  pe_dim: 64                   # 相位 PE 维度
+  phase_encoder_layers: 2      # PhaseAwareMotionEncoder MLP 层数
+  share_phase_encoder_across_layers: true   # 所有注入层共用一个相位编码器
+  layers: null                 # null = 所有 vace_blocks 都注入
+
+inference:
+  alpha_id: 1.0                # 身份注入强度
+  alpha_mo: 1.0                # 动作注入强度
+  protect_first_frame: true    # 首帧锚不被 Δ 改写
+  max_id_tokens_per_obj: 256   # 每物体最多保留多少身份 token
+  max_verb_tokens: 32          # 动词短语最大 token 数
+
+agent_loop:
+  max_rounds: 3
+  feedback_rules:
+    identity_drift:        { layer_band: middle,  d_id: 0.30, d_mo:  0.00 }
+    action_mismatch:       { layer_band: deep,    d_id: 0.00, d_mo:  0.30 }
+    shape_break:           { layer_band: shallow, d_id: 0.40, d_mo: -0.10 }
+    phase_lag:             { layer_band: deep,    d_id: 0.00, d_mo:  0.25 }
+    phase_lead:            { layer_band: deep,    d_id: 0.00, d_mo: -0.20 }
+
+train:
+  freeze_base: true
+  lr: 1.0e-4
+  weight_decay: 1.0e-2
+  batch_size: 1
+  grad_accum: 4
+  warmup_steps: 500
+  total_steps: 50000
+  ckpt_save_every: 2500
+  identity_dropout_prob: 0.10  # 训练时随机丢弃身份分支,鼓励泛化
+  motion_dropout_prob: 0.10

@@ -1,0 +1,1 @@
+from .wan_vace_mig_pipeline import WanVaceMIGPipeline

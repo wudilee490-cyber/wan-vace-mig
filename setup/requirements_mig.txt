@@ -1,0 +1,21 @@
+# MIG 扩展专用依赖 — VACE 官方没有但我们的项目需要
+
+# transformers 5.x / diffusers 0.35+ 在某些 import 链路上间接需要 onnxruntime
+# 装上避免误报 ImportError (即使我们不直接用)
+onnxruntime>=1.16
+
+# 通用工具
+PyYAML>=6.0
+requests>=2.31
+tenacity>=8.2
+Pillow>=10.0
+
+# 数据处理监控
+psutil>=5.9
+
+# 注意: VLM 相关 (qwen-vl-utils 等) 已搬到 sav_mig_data 项目
+# 模型项目本身不依赖 VLM, agent loop 时按需手动装
+
+# 训练监控(可选,默认注释掉)
+# tensorboard>=2.15
+# wandb>=0.16

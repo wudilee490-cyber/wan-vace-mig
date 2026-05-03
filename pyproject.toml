@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wan-vace-mig"
+version = "0.1.0"
+description = "Multi-Instance Generation (MIG) ControlNet-style adapter on top of Wan-VACE."
+readme = "README.md"
+requires-python = ">=3.10,<4.0"
+license = { text = "Apache-2.0" }
+authors = [{ name = "MIG team" }]
+keywords = ["video-generation", "controlnet", "adapter", "wan-vace", "multi-instance"]
+
+# 注意: torch / wan / flash-attn 的安装请走 setup/install.sh,
+# 因为它们的安装依赖 GPU/CUDA 版本,不能用普通 pip resolver
+dependencies = [
+    "torch>=2.5.1",
+    "torchvision>=0.20.1",
+    "diffusers>=0.31.0,<0.36.0",
+    "transformers>=4.57.0,<4.60.0",
+    "accelerate>=1.1.1",
+    "tokenizers>=0.20.3",
+    "numpy>=1.23.5,<2",
+    "einops",
+    "PyYAML>=6.0",
+    "Pillow>=10.0",
+    "matplotlib>=3.7",
+    "tqdm",
+    "easydict",
+    "huggingface_hub>=0.24.0",
+    # transformers 5.x / diffusers 0.35+ 间接需要
+    "onnxruntime>=1.16",
+]
+
+[project.optional-dependencies]
+flash = ["flash-attn>=2.7.4.post1"]
+dev   = ["pytest>=7", "ruff>=0.4", "pre-commit>=3"]
+
+[project.urls]
+Homepage = "https://github.com/your-org/wan-vace-mig"
+Issues   = "https://github.com/your-org/wan-vace-mig/issues"
+
+[tool.setuptools.packages.find]
+include = ["wan_vace_mig*"]
+exclude = ["scripts*", "setup*", "tests*", "models*", "checkpoints*", "data*"]
+
+[tool.setuptools.package-data]
+wan_vace_mig = ["configs/*.yaml"]

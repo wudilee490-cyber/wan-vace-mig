@@ -1,0 +1,47 @@
+# VACE 官方依赖 (来自 https://github.com/ali-vilab/VACE/blob/main/pyproject.toml)
+# 这些是 VACE 推理本身需要的,我们 MIG 扩展构建在它之上
+
+# PyTorch (实际安装由 install.sh 处理,根据 GPU 自动选 cu124/cu128/cu130)
+# 这里只声明依赖关系,版本约束写在 install.sh 里
+torch>=2.5.1
+torchvision>=0.20.1
+
+# 核心 ML 框架
+diffusers>=0.31.0,<0.36.0
+# transformers >=4.57.0 因为 Qwen3-VL/UMT5 需要 (上限放宽到 4.60)
+transformers>=4.57.0,<4.60.0
+tokenizers>=0.20.3
+accelerate>=1.1.1
+
+# 数值/科学
+numpy>=1.23.5,<2
+scikit-image
+scikit-learn
+einops
+
+# 可视化 (VACE annotators / 训练监控用,你那边发现少了)
+matplotlib>=3.7
+
+# 视频/图像 IO
+opencv-python>=4.9.0.80
+imageio
+imageio-ffmpeg
+# 注意: decord 有些发行版下需要 eva-decord 替代,详见 setup/README.md
+decord
+
+# 文本处理
+ftfy
+
+# COCO RLE 解码,SA-V mask 必需
+pycocotools
+
+# 运行时
+tqdm
+easydict
+BeautifulSoup4
+
+# 模型基础
+timm
+
+# Hugging Face 模型管理
+huggingface_hub>=0.24.0
