@@ -244,7 +244,7 @@ if python -c "import wan" 2>/dev/null; then
     say "  ✓ wan already installed at $WAN_PATH"
 else
     say "  installing wan@git+https://github.com/Wan-Video/Wan2.1 ..."
-    pip install "wan@git+https://github.com/Wan-Video/Wan2.1--no-build-isolation"
+    pip install --no-build-isolation "wan@git+https://github.com/Wan-Video/Wan2.1"
 fi
 
 # VACE 仓库 (ali-vilab/VACE, 提供 models.wan.WanVace 容器类)
